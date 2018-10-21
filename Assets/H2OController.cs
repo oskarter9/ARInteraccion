@@ -21,8 +21,8 @@ public class H2OController : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(hydrogen1.name);
-        Debug.Log(hydrogen2.name);
+        //Debug.Log(hydrogen1.name);
+        //Debug.Log(hydrogen2.name);
         if (hydrogen1.GetComponent<MeshRenderer>().enabled && hydrogen2.GetComponent<MeshRenderer>().enabled && oxygen.GetComponent<MeshRenderer>().enabled){
 
             Vector3 h1Position = hydrogen1.transform.parent.position;
@@ -33,8 +33,8 @@ public class H2OController : MonoBehaviour
             if (distanceHyd1ToOxy <= maxDistance && distanceHyd2ToOxy <= maxDistance)
             {
                 Debug.Log("both close to the oxygen");
-                Debug.Log("touchingHyd1 = " + touchingHyd1);
-                Debug.Log("touchingHyd2 = " + touchingHyd2);
+                //Debug.Log("touchingHyd1 = " + touchingHyd1);
+                //Debug.Log("touchingHyd2 = " + touchingHyd2);
                 if (!touchingHyd1){
                     hydrogen1.transform.Translate((hydrogen1.transform.parent.position - oxygen.transform.parent.position).normalized * 10f
                                               * Time.deltaTime);
@@ -50,8 +50,21 @@ public class H2OController : MonoBehaviour
         }
 
     }
+    /*private void OnTriggerEnter(Collider c)
+    {
+        if (c.gameObject.tag == "Hydrogen1")
+        {
+            Debug.Log("Hydrogen1 touching");
+            touchingHyd1 = true;
+        }
 
-    private void OnTriggerEnter(Collider other)
+        if (c.gameObject.tag == "Hydrogen2")
+        {
+            Debug.Log("Hydrogen2 touching");
+            touchingHyd2 = true;
+        }
+    }*/
+    /*private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.name == "Hydrogen1")
         {
@@ -62,7 +75,7 @@ public class H2OController : MonoBehaviour
         {
             touchingHyd2 = true;
         }
-    }
+    }*/
 
     /*
     private void OnTriggerExit(Collider other)

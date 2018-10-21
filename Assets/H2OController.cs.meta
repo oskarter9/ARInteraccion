@@ -3,7 +3,12 @@ guid: 782e4e8abc3504a59bdf61930856b629
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - hydrogen1: {fileID: 1650879736605788, guid: 613ce5c5bd17a714aabb103e13a2b6e5,
+      type: 2}
+  - hydrogen2: {fileID: 1486134411386370, guid: 30b4c6a7d303b294b9962af0d80e9c14,
+      type: 2}
+  - oxygen: {fileID: 1343445317581654, guid: ce7189a3f98b1084d853e0029612d8ed, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
