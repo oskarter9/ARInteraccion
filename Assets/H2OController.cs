@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class H2OController : MonoBehaviour
 {
@@ -8,87 +9,44 @@ public class H2OController : MonoBehaviour
     public GameObject hydrogen1;
     public GameObject hydrogen2;
     public GameObject oxygen;
+    public Transform target1;
+    public Transform target2;
 
     public bool touchingHyd1;
     public bool touchingHyd2;
 
     public float maxDistance;
 
-    private void Awake()
-    {
-        oxygen = this.transform.GetChild(0).gameObject;
-    }
+    private bool updateMovement;
 
     private void Update()
     {
-        //Debug.Log(hydrogen1.name);
-        //Debug.Log(hydrogen2.name);
+        if (!updateMovement){
+            return;
+        }
         if (hydrogen1.GetComponent<MeshRenderer>().enabled && hydrogen2.GetComponent<MeshRenderer>().enabled && oxygen.GetComponent<MeshRenderer>().enabled){
 
-            Vector3 h1Position = hydrogen1.transform.parent.position;
-            Vector3 h2Position = hydrogen2.transform.parent.position;
+            Vector3 h1Position = hydrogen1.transform.parent.position; //posicion target hidrogeno1  
+            Vector3 h2Position = hydrogen2.transform.parent.position; //posicion target hidrogeno2
 
-            float distanceHyd1ToOxy = Vector3.Distance(h1Position, oxygen.transform.parent.position);
-            float distanceHyd2ToOxy = Vector3.Distance(h2Position, oxygen.transform.parent.position);
+            float distanceHyd1ToOxy = Vector3.Distance(h1Position, oxygen.transform.parent.position); //distancia target ox a hyd1
+            float distanceHyd2ToOxy = Vector3.Distance(h2Position, oxygen.transform.parent.position); //distancia target ox a hyd2
             if (distanceHyd1ToOxy <= maxDistance && distanceHyd2ToOxy <= maxDistance)
             {
                 Debug.Log("both close to the oxygen");
-                //Debug.Log("touchingHyd1 = " + touchingHyd1);
-                //Debug.Log("touchingHyd2 = " + touchingHyd2);
-                if (!touchingHyd1){
-                    hydrogen1.transform.Translate((hydrogen1.transform.parent.position - oxygen.transform.parent.position).normalized * 10f
-                                              * Time.deltaTime);
-                }
-
-                if (!touchingHyd2){
-                    hydrogen2.transform.Translate((hydrogen2.transform.parent.position - oxygen.transform.parent.position).normalized * 10f
-                                              * Time.deltaTime);
-                }
-
-
+                Sequence s = DOTween.Sequence();
+                s.AppendCallback(() =>
+                {
+                    hydrogen1.transform.DOMove(target1.position, 2f);
+                    hydrogen2.transform.DOMove(target2.position, 2f);
+                });
+                s.OnComplete(() =>
+                {
+                    updateMovement = false;
+                });
+                
             }
         }
 
     }
-    /*private void OnTriggerEnter(Collider c)
-    {
-        if (c.gameObject.tag == "Hydrogen1")
-        {
-            Debug.Log("Hydrogen1 touching");
-            touchingHyd1 = true;
-        }
-
-        if (c.gameObject.tag == "Hydrogen2")
-        {
-            Debug.Log("Hydrogen2 touching");
-            touchingHyd2 = true;
-        }
-    }*/
-    /*private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.name == "Hydrogen1")
-        {
-            touchingHyd1 = true;
-        }
-
-        if (other.gameObject.name == "Hydrogen2")
-        {
-            touchingHyd2 = true;
-        }
-    }*/
-
-    /*
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.name == "Hydrogen2"){
-            touchingHyd2 = true;
-        }
-        if (other.name == "Hydrogen1"){
-            touchingHyd1 = false;
-        }
-    }
-    */
-
-
-
 }
