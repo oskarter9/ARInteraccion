@@ -11,19 +11,19 @@ public class H2OController : MonoBehaviour
     public GameObject oxygen;
     public Transform target1;
     public Transform target2;
+    public Transform hyd1Target;
+    public Transform hyd2Target;
 
     public bool touchingHyd1;
     public bool touchingHyd2;
 
     public float maxDistance;
 
-    private bool updateMovement;
+    private bool updateMovement = true;
 
     private void Update()
     {
-        if (!updateMovement){
-            return;
-        }
+
         if (hydrogen1.GetComponent<MeshRenderer>().enabled && hydrogen2.GetComponent<MeshRenderer>().enabled && oxygen.GetComponent<MeshRenderer>().enabled){
 
             Vector3 h1Position = hydrogen1.transform.parent.position; //posicion target hidrogeno1  
@@ -37,6 +37,10 @@ public class H2OController : MonoBehaviour
                 Sequence s = DOTween.Sequence();
                 s.AppendCallback(() =>
                 {
+                    if (!updateMovement)
+                    {
+                        return;
+                    }
                     hydrogen1.transform.DOMove(target1.position, 2f);
                     hydrogen2.transform.DOMove(target2.position, 2f);
                 });
@@ -45,6 +49,20 @@ public class H2OController : MonoBehaviour
                     updateMovement = false;
                 });
                 
+            }
+
+            else if (distanceHyd1ToOxy > maxDistance && distanceHyd2ToOxy > maxDistance){
+                Sequence s = DOTween.Sequence();
+                s.AppendCallback(() =>
+                {
+                    hydrogen1.transform.DOMove(hyd1Target.position, 2f);
+                    hydrogen2.transform.DOMove(hyd2Target.position, 2f);
+                });
+                s.OnComplete(() =>
+                {
+                    updateMovement = true;
+                });
+
             }
         }
 
